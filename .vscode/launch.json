@@ -18,9 +18,18 @@
             "program": "plot.py",
             "console": "integratedTerminal",
             "args": [
-                "outputs/out_2020-09-23_14-15-02_0.mat",
+                "outputs/out_2020-09-24_13-05-04_0.mat",
                 "-p",
-                "one"
+                "default",
+                "-c",
+                "0:0:0",
+                "0:5:0",
+                "0:30:0",
+                "0:40:0",
+                "-f",
+                "-s",
+                "0:5:0",
+                "0:15:0"
             ]
         },
         {
