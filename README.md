@@ -22,4 +22,4 @@ plot.py outputs/out_2020-09-24_13-05-04_0.mat -c 1:45:0 1:50:0 2:30:0 2:40:0 -f
 ``` bash
 plot.py outputs/out_2020-09-24_11-24-10_0.mat -f
 ```
-![alt text](./plots/plot2_2.png)
+![alt text](./plots/plot3.png)
