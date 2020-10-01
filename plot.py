@@ -140,6 +140,24 @@ def calcMeanDiff(list, marker):
             mean[j].append(np.mean(list[j][marker[i]['start']['index']:marker[i]['stop']['index']]))
         diff.append(mean[j][0] - mean[j][1])
     return (mean, diff)
+    
+def calcStdDev(list, marker):
+    std = [[],[],[]]
+    for j in range(3):      
+        for i in range(2):
+            std[j].append(np.std(list[j][marker[i]['start']['index']:marker[i]['stop']['index']]))
+    return std
+
+def calcRelMinMax(list, marker):
+    mean = [[],[],[]]
+    min = [[],[],[]]
+    max = [[],[],[]]
+    for j in range(3):      
+        for i in range(2):
+            mean[j].append(np.mean(list[j][marker[i]['start']['index']:marker[i]['stop']['index']]))
+            min[j].append(- mean[j][i] + np.min(list[j][marker[i]['start']['index']:marker[i]['stop']['index']]))
+            max[j].append(- mean[j][i] + np.max(list[j][marker[i]['start']['index']:marker[i]['stop']['index']]))
+    return (min, max)
 
 # def norm_mlp(list, start=0, end=0):
 #     arr = []
@@ -205,6 +223,7 @@ parser.add_argument('-f', '--filter',dest='filter', action='store_const', const=
 parser.add_argument('-s', '--slice',dest='slice', type=str, nargs=2, metavar=('start','stop'), help='Take a slice')
 args = parser.parse_args()
 
+print('Loading {:s} ...'.format(args.file[0]))
 data = getMat(args.file[0])
 
 temp = [ data["channel4"][0], data["channel5"][0], data["channel6"][0]]
@@ -217,9 +236,40 @@ marker = None
 
 if(args.compensate):
     marker = extractMarker(args.compensate)
+    print('Compensating Marker: ', end='')
+    print(args.compensate)
 
     val, val_fact, val_offs = compensate(val, marker)
     temp, temp_fact, temp_offs = compensate(temp, marker)
+    
+    mean, diff = calcMeanDiff(val, marker)
+    std = calcStdDev(val, marker)
+    min, max = calcRelMinMax(val, marker)
+    
+    statistics = {
+        'mean' : {
+            'name': "MEAN",
+            'val': mean,
+        },
+        'std' : {
+            'name': "STD_DEV",
+            'val': std,
+        },
+        'min' : {
+            'name': "REL_MIN",
+            'val': min,
+        },
+        'max' : {
+            'name': "REL_MAX",
+            'val': max,
+        },
+    }
+
+    for key in statistics:
+        print('{:s}:'.format(statistics[key]['name']))
+        for i,m in enumerate(statistics[key]['val']):
+            for j,n in enumerate(m):
+                print('\tLine {:d}, AREA {:d}\t: {:f}V'.format(i, j, n))
 
 if(args.filter):
     # if(len(args.filter == 2)):
