@@ -59,7 +59,7 @@ def plot_time(val, temp):
     plt.show()
 
 def plot_time_one_plt(val, temp, factor=[[1,1,1],[1,1,1]], offset=[[0,0,0],[0,0,0]], marker = None ,colors = ["red", "orange", "blue"]):
-    fig, axs = plt.subplots(2)
+    fig, axs = plt.subplots(2, sharex=True)
 
     data = [val, temp]
 
@@ -92,7 +92,7 @@ def plot_time_one_plt(val, temp, factor=[[1,1,1],[1,1,1]], offset=[[0,0,0],[0,0,
     plt.show()
 
 def plot_norm_mean(val, temp):
-    fig, axs = plt.subplots(2,3)
+    fig, axs = plt.subplots(2,3) 
 
     for i in range(3):
         axs[0, i].plot(temp[i], val[i],",")
